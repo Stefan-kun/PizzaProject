@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pizza_shop',
-    'sorl.thumbnail',
 ]
 
 MIDDLEWARE_CLASSES = [
