@@ -1,0 +1,46 @@
+{% extends 'base_2cols.html' %}
+{% load page_corr %}
+
+{% block first_col %}
+    <div class="page-header" style="margin-top: 0;">
+        <a class="h4 text-left" href="{% url 'section' meal.subsec.sec.link %}">{{ meal.subsec.sec }}</a>
+        {% for subsec in meal.subsec.sec.subsecs.all %}
+            <br><a class="h5 pull-right{% ifequal subsec meal.subsec %} active{% endifequal %}" href="{% url 'subsection' subsec.sec.link subsec.link %}">{{ subsec }}</a>
+        {% endfor %}
+        <div class="clearfix"></div>
+    </div>
+    {% thumb_cart cart %}
+{% endblock %}
+
+{% block second_col %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-5"><img class="img-responsive" src="{{ meal.imgs.first.url }}"></div>
+        <div class="col-xs-12 col-sm-7">
+            <h2>{{ meal }}</h2>
+            <h4>{{ meal.weight }}&nbsp;г</h4>
+            <p>{{ meal.descr }}</p>
+            {% if meal.ingredients %}
+                <p>Ингредиенты:
+                    {% for ing in meal.ingredients.all %}
+                        <span {% if ing.descr %}
+                            data-container="body" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{ ing.descr }}"
+                        {% endif %}>{{ ing }}</span>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+            <h3 class="text-right">{{ meal.price }}&nbsp;Р/h3>
+            <div class="col-sm-12 text-right" style="padding: 0;">
+                <input class="req_amount" type="number" min="1" max="30" value="{% if in_cart %}{{ in_cart }}{% else %}1{% endif %}" size="2" autocomplete="off" />
+                <button type="button" style="margin-top:0 !important; height: 38px;" class="btn btn-primary btn-ajax" data-type="set" data-link="{{ meal.link }}">
+                {% if in_cart %}Изменить{% else %}Заказать{% endif %}</button>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 5rem;">
+        <h2>Смотрите также:</h2>
+        {% for meal in meals %}
+            {% meal_info meal True %}
+        {% endfor %}
+    </div>
+{% endblock %}

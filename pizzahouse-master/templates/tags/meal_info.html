@@ -1,0 +1,22 @@
+{% load thumbnail %}
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="thumbnail">
+        <img style="max-height: 150px; max-width: 320px;" src="{{ meal.imgs.first.url }}" alt="{{ meal.title }}">
+        <div class="caption">
+            <p class="text-right" style="top: -10px; position: relative; padding: 2px 4px; margin-bottom: -10px; background: #fff;">{% if subsection %}<a href="{% url 'subsection' meal.subsec.sec.link meal.subsec.link %}">{{ meal.subsec }}</a>{% endif %}</p>
+            <span style="display: block;">
+                <h4 class="text-right pull-right">{{ meal.price }}&nbsp;Р/h4>
+                <h4 class="text-left pull-left"><a href="{% url 'meal' meal.subsec.sec.link meal.subsec.link meal.link %}">{{ meal }}</a></h4>
+            </span>
+            <div class="clearfix"></div>
+            <p class="text-center" style="margin-bottom: 0;">
+                <button class="btn btn-primary btn-ajax" role="button" data-link="{{ meal.link }}" data-type="add">
+                   В корзину
+                </button>
+{#                <button class="btn btn-default" role="button" data-link="{{ meal.link }}" data-type="change">#}
+{#                   Изменить#}
+{#                </button>#}
+            </p>
+        </div>
+    </div>
+</div>

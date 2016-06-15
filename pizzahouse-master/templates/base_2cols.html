@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                {% block first_col %}
+                {% endblock %}
+            </div>
+
+            <div class="col-md-9">
+                <div class="row" id="content" style="padding: 0; margin: 0;">
+                {% block second_col %}
+                {% endblock %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+{% endblock %}

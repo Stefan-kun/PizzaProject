@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+{% block head %}
+    {% include 'head.html' %}
+{% endblock %}
+</head><!--/head-->
+<body>
+<header>
+    {% block header %}
+        {% include 'header.html' %}
+    {% endblock %}
+</header> <!--/header-->
+
+{% block base %}
+{% block content %}
+{% endblock %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+
+{% block scripts %}
+<!-- jQuery -->
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+$(document).ready(function(){
+
+    $('[data-toggle="popover"]').popover(); // popovers
+
+    $.ajaxSetup({
+        data: { 'csrfmiddlewaretoken': '{{ csrf_token }}'}
+    });
+    $( document ).on('click', '.btn-ajax', function() {
+        var curr = $(this);
+        var am = 0;
+        if ( curr.siblings('.req_amount').length ) {
+            am = curr.siblings('.req_amount').eq(0).val();
+        }
+        var meal = curr.data('link');
+        if ( curr.data('type') == 'search' ) {
+            meal = $('#search_text').val();
+        }
+        $.ajax({
+            url: '{% url 'handler' %}',
+            type: "POST",
+            data: {
+                'meal': meal,
+                'type': curr.data('type'),
+                'amount': am
+            }
+        }).done(function(data) {
+            var cart = $('#user_cart');
+            switch (curr.data('type')) {
+                case 'add':
+                case 'set':
+                    var ci = $('#cart-' + curr.data('link'));
+                    if ( cart.children('h4').length ) {
+                        $('#bill').show();
+                        cart.children('h4').remove();
+                    }
+                    if ( ci.length ) {
+                        ci.replaceWith(data);
+                    } else {
+                        $( data ).insertBefore('#bill');
+                    }
+                    break;
+                case 'del':
+                    curr.parents('#cart-' + curr.data('link')).remove();
+                    if ( cart.children('[id^=cart-]').length == 0) {
+                        $('#bill').hide();
+                        cart.append('<h4>Ваша корзина пуста</h4>');
+                    }
+                    break;
+                case 'search':
+                    $('#content').html(data);
+                    break;
+                default:
+                    console.log('Error, wrong method?');
+                    break;
+            }
+        }).fail(function(data) {
+            console.log('Error, wrong method?');
+{#            alert('Something is worng!');#}
+        });
+    })
+})
+</script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+{% endblock %}
+</body>
+</html>

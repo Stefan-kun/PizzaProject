@@ -1,0 +1,13 @@
+{% extends 'base_2cols.html' %}
+{% load page_corr %}
+
+{% block first_col %}
+    {% thumb_cart cart %}
+{% endblock %}
+
+{% block second_col %}
+    <div class="col-xs-12">
+        <h2>Информация!</h2>
+        <p>Много полезной информации</p>
+    </div>
+{% endblock %}

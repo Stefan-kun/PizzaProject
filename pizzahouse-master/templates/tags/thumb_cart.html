@@ -1,0 +1,22 @@
+<div class="thumbnail">
+    <div class="caption" id="user_cart">
+        <p class="lead">Корзина</p>
+        {% if not cart.cartmeal_set.all %}
+            <h4>Ваша корзина пуста</h4>
+            <a href="{% url 'order' %}" style="text-decoration: none;"><button class="btn btn-success center-block" id="bill" style="display: none;" role="link" data-link="{{ meal.link }}" data-type="bill">Заказать</button></a>
+        {% else %}
+            {% for cart_meal in cart.cartmeal_set.all %}
+                <div class="row" style="padding: 0; margin: 0;" id="cart-{{ cart_meal.meal.link }}">
+                    <div class="col-xs-12 col-sm-5 text-left" style="padding: 0;">
+                        <p><a href="{% url 'meal' cart_meal.meal.subsec.sec.link cart_meal.meal.subsec.link cart_meal.meal.link %}">{{ cart_meal }}</a></p>
+                    </div>
+                    <div class="col-xs-4 col-sm-3 text-left" style="padding: 0;">{{ cart_meal.amount }}&nbsp;шт.</div>
+                    <div class="col-xs-8 col-sm-4 text-right" style="padding: 0;">
+                        <p class="text-right">{{ cart_meal.sum }}&nbsp;₽&nbsp;<a style="cursor: pointer;" role="link" class="btn-ajax" data-type='del' data-link="{{ cart_meal.meal.link }}">X</a></p>
+                    </div>
+                </div>
+            {% endfor %}
+            <a href="{% url 'order' %}" style="text-decoration: none;"><button class="btn btn-success center-block" id="bill" role="link" data-link="{{ meal.link }}" data-type="bill">Заказать</button></a>
+        {% endif %}
+    </div>
+</div>

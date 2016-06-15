@@ -1,0 +1,22 @@
+{% extends 'base_2cols.html' %}
+{% load page_corr %}
+
+{% block first_col %}
+    <div class="page-header" style="margin-top: 0;">
+        <a class="h4 text-left" href="{% url 'section' section.link %}">{{ section }}</a>
+        {% for subsec in section.subsecs.all %}
+            <br><a class="h5 pull-right" href="{% url 'subsection' subsec.sec.link subsec.link %}">{{ subsec }}</a>
+        {% endfor %}
+        <div class="clearfix"></div>
+    </div>
+    {% thumb_cart cart %}
+{% endblock %}
+
+{% block second_col %}
+<div class="row">
+    {% for meal in meals %}
+        {% meal_info meal True %}
+    {% endfor %}
+{% pagination meals %}
+</div>
+{% endblock %}

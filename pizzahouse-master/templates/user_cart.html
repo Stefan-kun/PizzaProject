@@ -1,0 +1,11 @@
+<p class="lead">Корзина</p>
+{##}
+{#<div class="list-group">#}
+{#    <a href="#" class="list-group-item">Category 1</a>#}
+{#    <a href="#" class="list-group-item">Category 2</a>#}
+{#    <a href="#" class="list-group-item">Category 3</a>#}
+{#</div>#}
+{% if session.cart %}
+{% else %}
+    <h4>Ваша корзина пуста</h4>
+{% endif %}

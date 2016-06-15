@@ -1,0 +1,8 @@
+{% load page_corr %}
+
+{% for meal in meals %}
+    {% meal_info meal %}
+{% endfor %}
+{% if not meals %}
+    <h3>Ничего не найдено</h3>
+{% endif %}
