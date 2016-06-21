@@ -214,11 +214,11 @@ def register(request):
             profile.save()
 
             new_user = authenticate(email=user_form.cleaned_data['email'], password=user_form.cleaned_data['password'])
-            login(request, new_user)
             if request.session.get('cart_token', ''):
                 cart = get_cart(request)
                 cart.owner = user
                 cart.save()
+            login(request, new_user)
             next_page = request.GET.get('next')
             if next_page:
                 return HttpResponseRedirect(next_page)
@@ -286,13 +286,14 @@ def login_user(request, template_name='registration/login.html',
             if not is_safe_url(url=redirect_to, host=request.get_host()):
                 redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
 
-            # Okay, security check complete. Log the user in.
-            login(request, form.get_user())
-
             if request.session.get('cart_token', ''):
                 cart = get_cart(request)
-                cart.owner = form.get_user()
-                cart.save()
+                if cart.cartmeal_set.all():
+                    cart.owner = form.get_user()
+                    cart.save()
+                
+            # Okay, security check complete. Log the user in.
+            login(request, form.get_user())
 
             return HttpResponseRedirect(redirect_to)
     else:
